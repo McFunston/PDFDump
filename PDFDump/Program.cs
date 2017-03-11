@@ -51,12 +51,12 @@ namespace PDFDump
         }
 
         public static string GetTextFromAllPages(String pdfPath)
-        {
-            PdfReader reader = new PdfReader(pdfPath);
+        {            
             StringWriter output = new StringWriter();
 
             try
             {
+                PdfReader reader = new PdfReader(pdfPath);
                 for (int i = 1; i <= reader.NumberOfPages; i++)
                     output.WriteLine(PdfTextExtractor.GetTextFromPage(reader, i, new SimpleTextExtractionStrategy()));
                 return output.ToString();
@@ -64,7 +64,7 @@ namespace PDFDump
 
             catch (Exception e)
             {
-                output.Write($"{pdfPath} was not able to be processed. Here is the error {e.Message}");
+                output.Write($"{pdfPath} was not able to be processed. The following exception was thrown: <{e.Message}>");
                 return output.ToString();
             }
             
