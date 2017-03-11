@@ -53,13 +53,21 @@ namespace PDFDump
         public static string GetTextFromAllPages(String pdfPath)
         {
             PdfReader reader = new PdfReader(pdfPath);
-
             StringWriter output = new StringWriter();
 
-            for (int i = 1; i <= reader.NumberOfPages; i++)
-                output.WriteLine(PdfTextExtractor.GetTextFromPage(reader, i, new SimpleTextExtractionStrategy()));
+            try
+            {
+                for (int i = 1; i <= reader.NumberOfPages; i++)
+                    output.WriteLine(PdfTextExtractor.GetTextFromPage(reader, i, new SimpleTextExtractionStrategy()));
+                return output.ToString();
+            }
 
-            return output.ToString();
+            catch (Exception e)
+            {
+                output.Write($"{pdfPath} was not able to be processed. Here is the error {e.Message}");
+                return output.ToString();
+            }
+            
         }
     }
 
