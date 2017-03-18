@@ -11,23 +11,36 @@ namespace PDFDump
     {
         static void Main(string[] args)
         {
-            ProcessPDFs(GetPDFList());
-            //string fileName;
+            string path;
+            if (args.Length == 0 || !(CheckArguments(args[0])))
+            {                
+                var currentFolder = new DirectoryInfo(System.IO.Directory.GetCurrentDirectory());
+                path = currentFolder.FullName;
+            }
 
-            //fileName = @"Resume_MicaFunston.pdf";
-            
-            //var results = GetTextFromAllPages(fileName);
-            //WriteText(fileName, results);
+            else path = args[0];
+
+            ProcessPDFs(GetPDFList(path));
         }
 
-        public static List<string> GetPDFList()
+        public static bool CheckArguments(string arguments)
+        {
+            if (File.Exists(arguments) || Directory.Exists(arguments)) return true;            
+            return false;
+        }
+
+        public static List<string> GetPDFList(string path)
         {
             List<String> PDFs = new List<string>();
-            var folder = new DirectoryInfo(System.IO.Directory.GetCurrentDirectory());
-            foreach (var fi in folder.EnumerateFiles("*.pdf"))
+            if (!(path.ToLower().Contains(".pdf")))
             {
-                PDFs.Add(fi.Name);
+                var folder = new DirectoryInfo(System.IO.Directory.GetCurrentDirectory());
+                foreach (var fi in folder.EnumerateFiles("*.pdf"))
+                {
+                    PDFs.Add(fi.Name);
+                }
             }
+            else PDFs.Add(path);
             return PDFs;
         }
 
