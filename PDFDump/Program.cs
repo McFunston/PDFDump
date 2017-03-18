@@ -31,17 +31,18 @@ namespace PDFDump
 
         public static List<string> GetPDFList(string path)
         {
-            List<String> PDFs = new List<string>();
+            List<String> PDFList = new List<string>();
+            
             if (!(path.ToLower().Contains(".pdf")))
             {
-                var folder = new DirectoryInfo(System.IO.Directory.GetCurrentDirectory());
+                var folder = new DirectoryInfo(path);
                 foreach (var fi in folder.EnumerateFiles("*.pdf"))
                 {
-                    PDFs.Add(fi.Name);
+                    PDFList.Add(fi.FullName);
                 }
             }
-            else PDFs.Add(path);
-            return PDFs;
+            else PDFList.Add(path);
+            return PDFList;
         }
 
         public static void ProcessPDFs(List<string> PDFList)
